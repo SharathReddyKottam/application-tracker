@@ -1,1 +1,9 @@
 .env
+credentials.json
+token.json
+scanned_ids.json
+*.xlsx
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
