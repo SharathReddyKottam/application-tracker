@@ -76,6 +76,24 @@ Recruiter suggestions and job alerts you haven't acted on yet — surfaced as a 
 
 ---
 
+## 📸 Screenshots
+
+**Job Applications Sheet**
+![Job Applications](screenshots/Excel_First.png)
+
+**AI Remarks & Next Steps**
+![AI Remarks](screenshots/Excel_Second.png)
+
+**Terminal — Analyzing emails in batches**
+![Terminal Analysis](screenshots/Terminal_Analysing1.png)
+
+![Terminal Analysis 2](screenshots/Terminal_Analysing2.png)
+
+**Terminal — Incremental run (no new emails)**
+![No New Emails](screenshots/Terminal_NoEmailsFound.png)
+
+---
+
 ## 🚀 Setup
 
 ### 1️⃣ Gmail API
