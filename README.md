@@ -1,56 +1,179 @@
-# Job Application Tracker
+# 📬 Application Tracker
 
-Automatically reads your Gmail, uses AI (Gemini) to extract job application data, and saves everything to a color-coded Excel file.
+> *Because your inbox shouldn't be your job search dashboard.*
 
-## Features
-- Reads all job-related emails from Gmail
-- AI extracts company, role, stage, source, application method, and more
-- Color-coded stages (Applied, Interview, Assessment, Offer, Rejected)
-- AI-generated remarks + manual notes column
-- Incremental runs — only processes new emails each time
-- Two sheets: Job Applications + To Apply (recruiter suggestions)
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
+![Gmail API](https://img.shields.io/badge/Gmail-API-red?style=flat-square&logo=gmail)
+![Gemini AI](https://img.shields.io/badge/Gemini-2.5%20Flash-orange?style=flat-square&logo=google)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-## Setup
+---
 
-### 1. Gmail API
-- Go to [console.cloud.google.com](https://console.cloud.google.com)
-- Create a project → Enable Gmail API
-- Create OAuth 2.0 credentials (Desktop app)
-- Download as `credentials.json` and place in project folder
+## 🤯 The Problem
 
-### 2. Gemini API Key
-- Go to [aistudio.google.com](https://aistudio.google.com)
-- Create a free API key
+You've applied to 50+ jobs. Your inbox has 400+ emails. And you have absolutely no idea:
 
-### 3. Install Dependencies
-pip install google-auth google-auth-oauthlib google-api-python-client google-genai openpyxl
+- Did you already apply to that company?
+- Was that email a real interview invite or just a job alert?
+- Which applications went completely silent?
+- What were you supposed to follow up on last week?
 
-### 4. Configure
-Open `job_tracker.py` and replace:
-GEMINI_API_KEY = "your-gemini-api-key-here"
+**Sound familiar?** This tool fixes that.
 
-### 5. Run
+---
+
+## ✨ What It Does
+
+One command. That's all it takes.
+
+```bash
 python job_tracker.py
+```
 
-First run fetches all emails from the beginning.
-Every run after only processes new emails.
+The script:
+1. 📥 **Reads** all your job-related emails from Gmail
+2. 🤖 **Sends** them to Gemini AI for analysis
+3. 📊 **Saves** everything into a clean, color-coded Excel file
 
-## Output
-Excel file saved as `job_tracker_STARTDATE_to_ENDDATE.xlsx` with:
+No manual entry. No copy-pasting. No chaos.
 
-| Column | Description |
+---
+
+## 📊 What You Get
+
+A fully structured Excel file with two sheets:
+
+### Sheet 1 — Job Applications
+| Column | What It Tells You |
 |---|---|
-| Company | Company name |
-| Role | Job title |
-| Stage | Applied / Phone Screen / Assessment / Interview / Offer / Rejected |
-| Date | Email date |
-| Found On | LinkedIn / Indeed / Glassdoor etc. |
-| Applied Via | LinkedIn Easy Apply / Workday / Greenhouse etc. |
-| Email Type | Confirmation / Rejection / Interview Invite etc. |
-| Description | One-line summary |
-| Next Steps | What to do next |
-| AI Remarks | Smart observations from Gemini |
-| My Notes | Your own manual notes |
+| 🏢 Company | Who the email is from |
+| 💼 Role | What position you applied for |
+| 🎯 Stage | Where you are in the process |
+| 📅 Date | When the email arrived |
+| 🔍 Found On | LinkedIn / Indeed / Glassdoor / etc. |
+| 📨 Applied Via | Easy Apply / Workday / Greenhouse / etc. |
+| 📧 Email Type | Confirmation / Rejection / Interview Invite / etc. |
+| 📝 Description | One-line AI summary |
+| ➡️ Next Steps | What to do next |
+| 🤖 AI Remarks | Smart observations from Gemini |
+| ✏️ My Notes | Your own manual notes |
 
-## Note
-Never commit `credentials.json`, `token.json`, or `scanned_ids.json` — these are personal and gitignored.
+### Sheet 2 — To Apply
+Recruiter suggestions and job alerts you haven't acted on yet — surfaced as a clean, actionable list.
+
+---
+
+## 🎨 Stage Color Coding
+
+| Stage | Color |
+|---|---|
+| Applied | 🔵 Light Blue |
+| Phone Screen | 🟡 Yellow |
+| Online Assessment | 🟠 Orange |
+| Interview | 🟢 Green |
+| Offer | 🟣 Purple |
+| Rejected | 🔴 Red |
+
+---
+
+## 🚀 Setup
+
+### 1️⃣ Gmail API
+- Go to [console.cloud.google.com](https://console.cloud.google.com)
+- Create a project → Enable **Gmail API**
+- Create **OAuth 2.0 credentials** (Desktop app type)
+- Download as `credentials.json` → place in project folder
+- Add your Gmail under **OAuth consent screen → Test Users**
+
+### 2️⃣ Gemini API Key
+- Go to [aistudio.google.com](https://aistudio.google.com)
+- Click **Get API Key** → **Create API key in new project**
+- Copy the key
+
+### 3️⃣ Install Dependencies
+```bash
+pip install google-auth google-auth-oauthlib google-api-python-client google-genai openpyxl python-dotenv
+```
+
+### 4️⃣ Configure
+Create a `.env` file in the project folder:
+```
+GEMINI_API_KEY=your-gemini-api-key-here
+```
+
+### 5️⃣ Run
+```bash
+python job_tracker.py
+```
+
+---
+
+## 🔄 How Incremental Runs Work
+
+| Run | What Happens |
+|---|---|
+| First run | Fetches ALL emails from the very beginning of your Gmail |
+| Every run after | Only fetches emails you haven't seen before |
+
+Every processed email ID is saved to `scanned_ids.json` locally. Nothing ever gets missed or duplicated — regardless of when you run it.
+
+The output file is saved as:
+```
+job_tracker_2024-01-15_to_2026-06-23.xlsx
+```
+
+---
+
+## 🔐 Security
+
+Never commit these files — they're already in `.gitignore`:
+
+```
+.env                  ← your Gemini API key
+credentials.json      ← your Google OAuth credentials  
+token.json            ← your Gmail access token
+scanned_ids.json      ← your processed email IDs
+*.xlsx                ← your job data
+```
+
+---
+
+## 👥 Using This With Other People
+
+While the app is in **test mode**, you can add up to 100 users:
+
+1. Go to Google Cloud Console → **OAuth consent screen** → **Test Users**
+2. Add their Gmail address
+3. Share `credentials.json` and `job_tracker.py` with them
+4. They run `python job_tracker.py` — a browser opens asking them to sign into **their own** Gmail
+5. Their data stays completely local to their machine
+
+---
+
+## 🛣️ What's Next
+
+- [ ] Summary sheet with charts — applications by week, stage breakdown
+- [ ] Deduplication — merge multiple emails from the same company
+- [ ] Web UI — so non-technical users can run it without touching code
+- [ ] Auto-run on schedule — daily refresh without manual trigger
+
+---
+
+## 🤝 Contributing
+
+Found a bug? Have an idea? PRs are welcome.
+
+1. Fork the repo
+2. Create a branch (`git checkout -b feature/your-idea`)
+3. Commit your changes
+4. Open a pull request
+
+---
+
+## 📄 License
+
+MIT — do whatever you want with it.
+
+---
+
+*Built out of frustration with my own job search inbox. Hope it helps yours too.* 🙏
